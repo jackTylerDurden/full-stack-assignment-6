@@ -7,7 +7,8 @@ export default class ProductList extends React.Component{
     constructor(){
         super();
         this.state = {products : []};
-        this.addProduct = this.addProduct.bind(this);        
+        this.addProduct = this.addProduct.bind(this); 
+        this.deleteProduct = this.deleteProduct.bind(this);
     }
 
     componentDidMount(){
@@ -50,6 +51,21 @@ export default class ProductList extends React.Component{
         });
         this.loadData();
     }
+
+    async deleteProduct(id){
+        console.log('id------>>>',id);
+        const query = `mutation productDelete($id: Int!) {
+            productDelete(id: $id)
+        }`;
+        const variables = { id };
+        await fetch(window.env.UI_API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, variables }),
+        });
+        alert('Product deleted product successfully!');
+        this.loadData();
+    }
     
     
     render(){
@@ -58,7 +74,7 @@ export default class ProductList extends React.Component{
                 <h1>My Company Inventory</h1>                               
                 <h3>Showing all available products</h3>
                 <hr/>
-                <ProductTable products = {this.state.products}/>
+                <ProductTable deleteProduct={this.deleteProduct} products = {this.state.products}/>
                 <hr/>
                 <ProductAdd addProduct = {this.addProduct}/>
             </React.Fragment>

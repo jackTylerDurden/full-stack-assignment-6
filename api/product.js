@@ -28,9 +28,23 @@ async function productUpdate(_, { id, changes }) {
     return savedProduct;
 }
 
+async function remove(_, { id }) {
+    const db = getDb();
+    const product = await db.collection('products').findOne({ id });
+    if (!product) return false;
+    product.deleted = new Date();
+    let result = await db.collection('deleted_products').insertOne(product);
+    if (result.insertedId) {
+      result = await db.collection('products').removeOne({ id });
+      return result.deletedCount === 1;
+    }
+    return false;
+  }
+
 module.exports = {
     productList,
     productAdd,
     getProduct,
-    productUpdate    
+    productUpdate,
+    remove   
   };

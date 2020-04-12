@@ -1,35 +1,49 @@
 {
-  "name": "ui",
+  "name": "assignment5",
   "version": "1.0.0",
   "description": "",
-  "main": "uiserver.js",
+  "main": "index.js",
   "scripts": {
-    "start": "nodemon -w uiserver.js -w .env uiserver.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "babel public/src --presets @babel/react --out-dir public --watch --verbose",
-    "compile": "babel public/src --presets @babel/react --out-dir public",
-    "lint": "eslint --fix . --ext js,jsx --ignore-pattern src"
+    "#start": "UI server. HMR is enabled in dev mode.",
+    "start": "nodemon -w uiserver.js -w .env uiserver.js",
+    "#lint": "Runs ESLint on all relevant files",
+    "lint": "eslint . --ext js,jsx --ignore-pattern public",
+    "#watch": "Compile, and recompile on any changes.",
+    "watch": "webpack --watch",
+    "#compile": "Generates JS bundles for production. Use with start.",
+    "compile": "webpack --mode development"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "dotenv": "^6.2.0",
+    "express": "^4.17.1",
+    "isomorphic-fetch": "^2.2.1",
+    "nodemon": "^1.19.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^4.3.1",
+    "url-search-params": "^1.1.0",
+    "whatwg-fetch": "^3.0.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.4",
+    "@babel/core": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.8.3",
-    "babel-cli": "^6.26.0"
-  },
-  "dependencies": {
-    "@babel/core": "^7.9.0",
-    "babel": "^6.23.0",
-    "babel-cli": "^6.26.0",
-    "babel-install": "^2.1.0",
-    "babel-preset-react": "^6.24.1",
-    "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^18.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "express": "^4.17.1"
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-middleware": "^3.7.2",
+    "webpack-hot-middleware": "^2.25.0"
   }
 }

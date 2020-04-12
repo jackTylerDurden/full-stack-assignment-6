@@ -1,9 +1,11 @@
 type Query{
     productList:[Product!]!
+    product(id: Int!):Product!
 }
 
 type Mutation{
     productAdd(product:productInput!):Product!
+    productUpdate(id: Int!, changes: productUpdateInputs!): Product!
 }
 
 type Product {
@@ -15,6 +17,13 @@ type Product {
 }
 
 input productInput {
+    Name: String!
+	Price: Float
+	Image: String
+    Category: Category!
+}
+
+input productUpdateInputs{
     Name: String!
 	Price: Float
 	Image: String

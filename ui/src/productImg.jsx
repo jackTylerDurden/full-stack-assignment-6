@@ -39,14 +39,3 @@ export default class ProductImage extends React.Component{
     );
   }
 }
-/*export default function ProductImage({ match }) {
-  const { id } = match.params;
-  console.log('match-->>>',match);
-  return (
-    <div>
-      <br />
-      <br />
-      <img src={id} alt="not found" />
-    </div>
-  );
-}*/

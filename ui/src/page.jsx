@@ -1,7 +1,6 @@
 /* eslint linebreak-style: ["error","windows"] */
-/* eslint-disable*/
 import React from 'react';
-import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon, Tooltip, OverlayTrigger,Grid, } from 'react-bootstrap';
+import {Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import Contents from './contents.jsx';
 

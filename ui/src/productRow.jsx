@@ -1,7 +1,6 @@
 /* eslint-disable react/prefer-stateless-function */
 /* eslint linebreak-style: ["error","windows"] */
 /* eslint "react/jsx-no-undef": "off" */
-/* eslint-disable*/
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Button, Glyphicon, Tooltip, OverlayTrigger} from 'react-bootstrap';

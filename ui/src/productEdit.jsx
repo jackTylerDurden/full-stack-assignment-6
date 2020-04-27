@@ -1,10 +1,9 @@
 /* eslint linebreak-style: ["error","windows"] */
-/* eslint-disable*/
 
 import React from 'react';
 import NumInput from './NumInput.jsx';
 import TextInput from './TextInput.jsx';
-import { Button,Glyphicon,OverlayTrigger,Tooltip,Panel,Form,ControlLabel,FormControl,FormGroup,Col,Row } from 'react-bootstrap';
+import { Button,Panel,Form,ControlLabel,FormControl,FormGroup,Col } from 'react-bootstrap';
 
 export default class ProductEdit extends React.Component{
     constructor(){

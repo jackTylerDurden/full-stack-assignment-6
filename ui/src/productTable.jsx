@@ -1,6 +1,6 @@
 /* eslint linebreak-style: ["error","windows"] */
 /* eslint "react/jsx-no-undef": "off" */
-/* eslint-disable*/
+
 import React from 'react';
 import ProductRow from './productRow.jsx';
 import {Table} from 'react-bootstrap';

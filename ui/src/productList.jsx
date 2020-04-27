@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint linebreak-style: ["error","windows"] */
 /* eslint "react/jsx-no-undef": "off" */
-/* eslint-disable*/
+
 
 import React from 'react';
 import ProductTable from './productTable.jsx';
@@ -84,7 +84,7 @@ export default class ProductList extends React.Component {
   }
 
   showAlertMessage(type,messae){
-    
+
   }
 
   render() {

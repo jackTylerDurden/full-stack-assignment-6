@@ -1,7 +1,6 @@
 /* eslint linebreak-style: ["error","windows"] */
-/* eslint-disable*/
 import React from 'react';
-import { Button,Glyphicon,OverlayTrigger,Tooltip,Panel,Form,ControlLabel,FormControl,FormGroup,Col } from 'react-bootstrap';
+import { FormControl } from 'react-bootstrap';
 
 function format(num) {
   return num != null ? num.toString() : '';
@@ -33,9 +32,7 @@ export default class NumInput extends React.Component {
   }
 
   render() {
-    const { value } = this.state;
-    console.log('this.props------->>>',this.props);
-    console.log('this.state------->>>',this.state);
+    const { value } = this.state;    
     return (      
       <React.Fragment>
         <FormControl name={this.props.name} onChange={this.onChange} onBlur={this.onBlur} type="text" value={value} placeholder="text"/>

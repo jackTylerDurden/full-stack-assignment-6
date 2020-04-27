@@ -1,7 +1,10 @@
 /* eslint linebreak-style: ["error","windows"] */
+/* eslint-disable*/
+
 import React from 'react';
 import NumInput from './NumInput.jsx';
 import TextInput from './TextInput.jsx';
+import { Button,Glyphicon,OverlayTrigger,Tooltip,Panel,Form,ControlLabel,FormControl,FormGroup,Col,Row } from 'react-bootstrap';
 
 export default class ProductEdit extends React.Component{
     constructor(){
@@ -34,6 +37,7 @@ export default class ProductEdit extends React.Component{
     async handleSubmit(e){
         e.preventDefault();
         const {product} = this.state;
+        console.log("this.state-------->>>",this.state);
         const{id,...changes} = product;
         const variables = {id,changes};
         const query = `mutation productUpdate($id: Int!, $changes: productUpdateInputs!) {  
@@ -77,50 +81,65 @@ export default class ProductEdit extends React.Component{
         }
         const { product: { Name, Price } } = this.state;
         const { product: { Image, Category } } = this.state;
-        return(
-            <form onSubmit={this.handleSubmit}>
-                <h3>{`Editing product: ${id}`}</h3>
-                <table>
-                <tbody>
-                    <tr>
-                    <td>Name:</td>
-                    <td>
-                        <TextInput name="Name" value={Name} onChange={this.onChange} key={id} />
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>Price:</td>
-                    <td>
-                        <NumInput name="Price" value={Price} onChange={this.onChange} key={id} />
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>Image:</td>
-                    <td>
-                        <TextInput name="Image" value={Image} onChange={this.onChange} key={id} />
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>Category:</td>
-                    <td>
-                        <select name="Category" value={Category} onChange={this.onChange}>
-                        <option value="Shirts">Shirts</option>
-                        <option value="Jeans">Jeans</option>
-                        <option value="Jackets">Jackets</option>
-                        <option value="Sweaters">Sweaters</option>
-                        <option value="Accessories">Accessories</option>
-                        </select>
-                    </td>
-                    </tr>
-                    <tr>
-                    <td />
-                    <td>
-                        <button type="submit">Submit</button>
-                    </td>
-                    </tr>
-                </tbody>
-                </table>
-            </form>
+        return(            
+            <React.Fragment>
+                <Panel>
+                    <Panel.Heading>
+                        <Panel.Title>{`Editing product: ${id}`}</Panel.Title>
+                    </Panel.Heading>
+                    <Panel.Body>
+                        <Form onSubmit={this.handleSubmit} horizontal>                            
+                            <Col sm={6}>
+                                <FormGroup controlId="productName">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                            Product Name :
+                                    </Col>
+                                    <Col sm={9}>
+                                        <TextInput name="Name" value={Name} onChange={this.onChange} key={id} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup controlId="price">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                            Price :
+                                    </Col>
+                                    <Col sm={9}>
+                                        <NumInput name="Price" value={Price} onChange={this.onChange} key={id} />
+                                    </Col>
+                                </FormGroup>
+                            </Col>                             
+                            <Col sm={6}>
+                                <FormGroup controlId="image">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                        Image :
+                                    </Col>
+                                    <Col sm={9}>
+                                        <TextInput name="Image" value={Image} onChange={this.onChange} key={id} />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup controlId="category">
+                                    <Col componentClass={ControlLabel} sm={3}>
+                                        Category :
+                                    </Col>
+                                    <Col sm={9}>
+                                        <FormControl name="Category" defaultValue={Category} componentClass="select" placeholder="select">
+                                            <option value="Shirts">Shirts</option>
+                                            <option value="Jeans">Jeans</option>
+                                            <option value="Jackets">Jackets</option>
+                                            <option value="Sweaters">Sweaters</option>
+                                            <option value="Accessories">Accessories</option>
+                                        </FormControl>
+                                    </Col>
+                                </FormGroup>
+                            </Col>
+                            <Col smOffset={5}>
+                                <Button bsStyle="primary" type="button" type="submit">
+                                    Update Product
+                                </Button>
+                            </Col>
+                        </Form>
+                    </Panel.Body>
+                </Panel>                
+            </React.Fragment>            
         );
     }
 }

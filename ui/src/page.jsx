@@ -1,15 +1,25 @@
 /* eslint linebreak-style: ["error","windows"] */
+/* eslint-disable*/
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import {Navbar, Nav, NavItem, NavDropdown, MenuItem, Glyphicon, Tooltip, OverlayTrigger,Grid, } from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap';
 import Contents from './contents.jsx';
 
 function NavBar() {
   return (
-    <nav>
-      <NavLink exact to="/">Home</NavLink>
-      {' | '}
-      <NavLink to="/products">Product List</NavLink>
-    </nav>
+      <Navbar>
+        <Navbar.Header>
+            <Navbar.Brand>My Compnay Inventory</Navbar.Brand>
+        </Navbar.Header>
+        <Nav>
+          <LinkContainer exact to="/">
+              <NavItem>Home</NavItem>
+          </LinkContainer>
+          <LinkContainer exact to="/products">
+              <NavItem>Product</NavItem>
+          </LinkContainer>
+        </Nav>
+      </Navbar>   
   );
 }
 
@@ -17,7 +27,9 @@ export default function Page() {
   return (
     <div>
       <NavBar />
-      <Contents />
+      <Grid>
+        <Contents />
+      </Grid>
     </div>
   );
 }

@@ -1,5 +1,7 @@
 /* eslint linebreak-style: ["error","windows"] */
+/* eslint-disable*/
 import React from 'react';
+import { Button,Glyphicon,OverlayTrigger,Tooltip,Panel,Form,ControlLabel,FormControl,FormGroup,Col } from 'react-bootstrap';
 
 function format(text) {
   return text != null ? text : '';
@@ -28,8 +30,11 @@ export default class TextInput extends React.Component {
   render() {
     const { value } = this.state;
     const { tag = 'input', ...props } = this.props;
-    return React.createElement(tag, {
-      ...props, value, onBlur: this.onBlur, onChange: this.onChange,
-    });
+    console.log('this.props------->>>',this.props);
+    return(
+      <React.Fragment>
+        <FormControl name="" onChange={this.onChange} onBlur={this.onBlur} type="text" value={value} placeholder="text"/>
+      </React.Fragment>
+    );   
   }
 }

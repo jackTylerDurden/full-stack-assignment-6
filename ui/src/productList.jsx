@@ -15,8 +15,7 @@ export default class ProductList extends React.Component {
     this.addProduct = this.addProduct.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
     this.handleShowModal = this.handleShowModal.bind(this);
-    this.handleHideModal = this.handleHideModal.bind(this);
-    this.showAlertMessage = this.showAlertMessage.bind(this);
+    this.handleHideModal = this.handleHideModal.bind(this);    
   }
 
   componentDidMount() {
@@ -70,8 +69,7 @@ export default class ProductList extends React.Component {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables }),
-    });
-    this.showAlert()
+    });    
     this.loadData();
   }
 
@@ -83,9 +81,6 @@ export default class ProductList extends React.Component {
     this.setState({ showModal: false });
   }
 
-  showAlertMessage(type,messae){
-
-  }
 
   render() {
     const addProductTooltip = (

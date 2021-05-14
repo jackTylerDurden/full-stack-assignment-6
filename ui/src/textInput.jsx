@@ -29,9 +29,10 @@ export default class TextInput extends React.Component {
   render() {
     const { value } = this.state;
     const { tag = 'input', ...props } = this.props;    
+    const {name} = this.props;
     return(
       <React.Fragment>
-        <FormControl name="" onChange={this.onChange} onBlur={this.onBlur} type="text" value={value} placeholder="text"/>
+        <FormControl name={name} onChange={this.onChange} onBlur={this.onBlur} type="text" value={value} placeholder="text"/>
       </React.Fragment>
     );   
   }

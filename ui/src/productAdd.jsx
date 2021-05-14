@@ -37,18 +37,19 @@ export default class ProductAdd extends React.Component {
     handleSubmit(e){
         e.preventDefault();
         const form = document.forms.productAdd;        
-        const price = form.pricePerUnit.value;        
-        const product = {
-            category : form.category.value,
-            pricePerUnit : parseFloat(price.substring(1,price.length)),
+        const price = form.pricePerUnit.value;
+        
+        const product = {                        
             productName : form.productName.value,
-            imageUrl : form.imageUrl.value,            
+            vendor: form.vendor.value,
+            pricePerUnit : parseFloat(price.substring(1,price.length)),
+            quantity : parseInt(form.quantity.value),            
         }
         this.props.addProduct(product);
-        form.category.value="";
+        form.quantity.value = 0;
         form.pricePerUnit.value="$";        
         form.productName.value="";
-        form.imageUrl.value="";        
+        form.vendor.value="";        
     }
 
     dismissPriceValidation(e){
@@ -68,27 +69,21 @@ export default class ProductAdd extends React.Component {
         return(
             <React.Fragment>
                 <Form name ="productAdd" onSubmit={this.handleSubmit} horizontal>
-                    <Col sm={6}>
-                        <FormGroup controlId="category">
-                            <Col componentClass={ControlLabel} sm={3}>
-                                Category :
-                            </Col>
-                            <Col sm={9}>
-                                <FormControl name="category" componentClass="select" placeholder="select">
-                                    <option value="Shirts">Shirts</option>
-                                    <option value="Jeans">Jeans</option>
-                                    <option value="Jackets">Jackets</option>
-                                    <option value="Sweaters">Sweaters</option>
-                                    <option value="Accessories">Accessories</option>
-                                </FormControl>
-                            </Col>
-                        </FormGroup>
+                    <Col sm={6}>                        
                         <FormGroup controlId="productName">
                             <Col componentClass={ControlLabel} sm={3}>
                                 Product Name : 
                             </Col>
                             <Col sm={9}>
-                                <FormControl name="productName" type="text" placeholder="text"/>                        
+                                <FormControl name="productName" type="text" placeholder="Product Name"/>                        
+                            </Col>
+                        </FormGroup>
+                        <FormGroup controlId="vendor">
+                            <Col componentClass={ControlLabel} sm={3}>
+                                Vendor Name : 
+                            </Col>
+                            <Col sm={9}>
+                                <FormControl name="vendor" type="text" placeholder="Vendor Name"/>                        
                             </Col>
                         </FormGroup>
                     </Col>
@@ -98,18 +93,18 @@ export default class ProductAdd extends React.Component {
                                 Price Per Unit :
                             </Col>
                             <Col sm={9}>
-                                <FormControl name="pricePerUnit" onChange={this.checkValidPrice} defaultValue="$" type="text" placeholder="text"/>
+                                <FormControl name="pricePerUnit" onChange={this.checkValidPrice} defaultValue="$" type="Price Per Unit" placeholder="text"/>
                             </Col>
                             <FormGroup>
                                 <Col smOffset={3} sm={9}>{invalidPriceMessage}</Col>
                             </FormGroup>
                         </FormGroup>
-                        <FormGroup controlId="imageUrl">
+                        <FormGroup controlId="quantity">
                             <Col componentClass={ControlLabel} sm={3}>
-                                Image :
+                                Qunatity :
                             </Col>
                             <Col sm={9}>
-                                <FormControl name="imageUrl" type="text" placeholder="text"/>                        
+                                <FormControl name="quantity" type="text" placeholder="Quantity"/>                        
                             </Col>
                         </FormGroup>                        
                     </Col> 

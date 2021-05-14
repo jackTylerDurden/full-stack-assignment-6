@@ -1,40 +1,36 @@
 type Query{
     productList:[Product!]!
-    product(id: Int!):Product!
+    product(ItemId: Int!):Product!
 }
 
 type Mutation{
     productAdd(product:productInput!):Product!
-    productUpdate(id: Int!, changes: productUpdateInputs!): Product!
-    productDelete(id: Int!): Boolean!
+    productUpdate(ItemId: Int!, changes: productUpdateInputs!): Product!
+    productDelete(ItemId: Int!):Boolean!
 }
 
 type Product {
-    id: Int!
-	Name: String!
+    ItemId: Int!
+	ProductName: String
 	Price: Float
-	Image: String
-    Category: Category!
+	ImageJSON: String
+    Quantity: Int
+    Vendor: String
 }
 
 input productInput {
-    Name: String!
+    ItemId : Int!
+    ProductName: String!
 	Price: Float
-	Image: String
-    Category: Category!
+	ImageJSON: String
+    Quantity: Int
+    Vendor:String
 }
 
 input productUpdateInputs{
-    Name: String!
+    ProductName: String!
 	Price: Float
-	Image: String
-    Category: Category!
-}
-
-enum Category {
-    Shirts
-    Jeans
-    Jackets
-    Sweaters    
-    Accessories
+	ImageJSON: String
+    Quantity: Int
+    Vendor:String
 }

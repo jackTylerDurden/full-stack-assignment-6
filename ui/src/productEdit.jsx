@@ -18,15 +18,16 @@ export default class ProductEdit extends React.Component{
     }
 
     componentDidUpdate(prevProps){
-        const {match : {params : {id : prevId}}} = prevProps;
-        const {match :{params : {id}}} = this.props;
-        if( id !== prevId){
+        const {match : {params : {ItemId : prevId}}} = prevProps;
+        const {match :{params : {ItemId}}} = this.props;
+        if( ItemId !== prevId){
             this.loadData();
         }
     }
 
     onChange(event,naturalVal){
         const { name, value: textValue } = event.target;
+        console.log('event-------->>>',event.target);        
         const value = naturalVal === undefined ? textValue : naturalVal;
         this.setState(prevState => ({
           product: { ...prevState.product, [name]: value },
@@ -35,13 +36,12 @@ export default class ProductEdit extends React.Component{
 
     async handleSubmit(e){
         e.preventDefault();
-        const {product} = this.state;
-        console.log("this.state-------->>>",this.state);
-        const{id,...changes} = product;
-        const variables = {id,changes};
-        const query = `mutation productUpdate($id: Int!, $changes: productUpdateInputs!) {  
-            productUpdate(id: $id, changes: $changes) {    
-              id Name Price Image Category  
+        const {product} = this.state;        
+        const{ItemId,...changes} = product;
+        const variables = {ItemId,changes};        
+        const query = `mutation productUpdate($ItemId: Int!, $changes: productUpdateInputs!) {  
+            productUpdate(ItemId: $ItemId, changes: $changes) {    
+              ItemId ProductName Vendor Quantity Price ImageJSON
             } 
           }`;
         await fetch(window.env.UI_API_ENDPOINT, {
@@ -55,8 +55,8 @@ export default class ProductEdit extends React.Component{
     async loadData(){
         const { match: { params: { id } } } = this.props;
         const query = `query product($id: Int!){
-            product (id: $id) {
-                id Name Price Image Category
+            product (ItemId: $id) {
+                ItemId ProductName Price ImageJSON Quantity Vendor
             }
         }`;
         const variables = { id };
@@ -65,26 +65,26 @@ export default class ProductEdit extends React.Component{
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ query, variables }),
         });
-        const result = await response.json();
-        this.setState({ product: result.data.product });
+        const result = await response.json();  
+        console.log('result------->>>',result.data.product);      
+        this.setState({ product: result.data.product});
     }
 
-    render(){
-        const { product: { id } } = this.state;
-        const { match: { params: { id: propsId } } } = this.props;
-        if (id == null) {
+    render(){        
+        const { product: { ItemId } } = this.state;        
+        const { match: { params: { id: propsId } } } = this.props;                
+        if (ItemId == null) {
             if (propsId != null) {
                 return <h3>{`Product with ID ${propsId} not found.`}</h3>;
             }
             return null;
         }
-        const { product: { Name, Price } } = this.state;
-        const { product: { Image, Category } } = this.state;
+        const { product: {ProductName, Price, Quantity, Vendor } } = this.state;        
         return(            
             <React.Fragment>
                 <Panel>
                     <Panel.Heading>
-                        <Panel.Title>{`Editing product: ${id}`}</Panel.Title>
+                        <Panel.Title>{`Editing product: ${ProductName}`}</Panel.Title>
                     </Panel.Heading>
                     <Panel.Body>
                         <Form onSubmit={this.handleSubmit} horizontal>                            
@@ -94,7 +94,7 @@ export default class ProductEdit extends React.Component{
                                             Product Name :
                                     </Col>
                                     <Col sm={9}>
-                                        <TextInput name="Name" value={Name} onChange={this.onChange} key={id} />
+                                        <TextInput name="ProductName" value={ProductName} onChange={this.onChange} key={ItemId} />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup controlId="price">
@@ -102,34 +102,28 @@ export default class ProductEdit extends React.Component{
                                             Price :
                                     </Col>
                                     <Col sm={9}>
-                                        <NumInput name="Price" value={Price} onChange={this.onChange} key={id} />
+                                        <NumInput name="Price" value={Price} onChange={this.onChange} key={ItemId} />
                                     </Col>
                                 </FormGroup>
                             </Col>                             
                             <Col sm={6}>
-                                <FormGroup controlId="image">
+                                <FormGroup controlId="vendor">
                                     <Col componentClass={ControlLabel} sm={3}>
-                                        Image :
+                                        Vendor Name :
                                     </Col>
                                     <Col sm={9}>
-                                        <TextInput name="Image" value={Image} onChange={this.onChange} key={id} />
+                                        <TextInput name="Vendor" value={Vendor} onChange={this.onChange} key={ItemId} />
                                     </Col>
-                                </FormGroup>
-                                <FormGroup controlId="category">
+                                </FormGroup>                                
+                                <FormGroup controlId="quantity">
                                     <Col componentClass={ControlLabel} sm={3}>
-                                        Category :
+                                        Quantity :
                                     </Col>
                                     <Col sm={9}>
-                                        <FormControl name="Category" defaultValue={Category} componentClass="select" placeholder="select">
-                                            <option value="Shirts">Shirts</option>
-                                            <option value="Jeans">Jeans</option>
-                                            <option value="Jackets">Jackets</option>
-                                            <option value="Sweaters">Sweaters</option>
-                                            <option value="Accessories">Accessories</option>
-                                        </FormControl>
+                                        <TextInput name="Quantity" value={Quantity} onChange={this.onChange} key={ItemId} />
                                     </Col>
-                                </FormGroup>
-                            </Col>
+                                </FormGroup>                                
+                            </Col>                                                        
                             <Col smOffset={5}>
                                 <Button bsStyle="primary" type="button" type="submit">
                                     Update Product

@@ -13,7 +13,7 @@ const resolvers = {
   Mutation: {
     productAdd: product.productAdd,
     productUpdate: product.productUpdate,
-    productDelete: product.remove
+    productDelete: product.productDelete
   },
 };
 

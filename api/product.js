@@ -1,45 +1,76 @@
-/* eslint linebreak-style: ["error","windows"] */
-const { getDb, getNextSequence } = require('./db.js');
-async function productList() {
-    const db = getDb();
-    const productDB = await db.collection('products').find({}).toArray();
-    return productDB;
+var AWS = require('aws-sdk');
+AWS.config.update({
+    "region":"us-west-1"   
+});
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+async function productList() {    
+    var params = {                
+        ProjectionExpression: "ItemId, ProductName, Price, Currency, Quantity, Vendor, ImageJSON",        
+        TableName:"InventoryTable"
+    }
+
+    const response = await dynamoDB.scan(params).promise();    
+    return response.Items;
 }
 
-async function getProduct(_, { id }) {
-    const db = getDb();
-    const product = await db.collection('products').findOne({ id });
-    console.log('product--->>>',product);
-    return product;
+async function getProduct(_, { ItemId }) {
+    var params = {
+        ProjectionExpression: "ItemId, ProductName, Price, Currency, Quantity, Vendor, ImageJSON",
+        TableName:"InventoryTable",
+        ExpressionAttributeNames:{
+            "#ItemId":"ItemId"
+        },
+        ExpressionAttributeValues : {
+            ":ItemId":ItemId
+        },
+        FilterExpression: "#ItemId = :ItemId",
+    }
+    const response = await dynamoDB.scan(params).promise();    
+    return response.Items[0];
 }
 
 async function productAdd(_, { product }) {
-    const newProduct = product;
-    newProduct.id = await getNextSequence('products');
-    const db = getDb();
-    const result = await db.collection('products').insertOne(product);
-    const savedProduct = await db.collection('products').findOne({ _id: result.insertedId });
-    return savedProduct;
+    product.ImageJSON = product.ImageJSON == null ? '{"ImageInfo":[]}' : product.ImageJSON;
+    var params = {
+        TableName:"InventoryTable",
+        Item:product
+    }   
+    await dynamoDB.put(params).promise();    
 }
 
-async function productUpdate(_, { id, changes }) {
-    const db = getDb();
-    await db.collection('products').updateOne({ id }, { $set: changes });
-    const savedProduct = await db.collection('products').findOne({ id });
-    return savedProduct;
-}
-
-async function remove(_, { id }) {
-    const db = getDb();
-    const product = await db.collection('products').findOne({ id });
-    if (!product) return false;
-    product.deleted = new Date();
-    let result = await db.collection('deleted_products').insertOne(product);
-    if (result.insertedId) {
-      result = await db.collection('products').removeOne({ id });
-      return result.deletedCount === 1;
+async function productUpdate(_, { ItemId, changes }) {        
+    var rowToUpdate = {  
+        "ItemId":ItemId,
+        "ImageJSON":changes.ImageJSON == null ? '{"ImageInfo":[]}' : changes.ImageJSON,
+        "ProductName":changes.ProductName,
+        "Vendor":changes.Vendor,
+        "Price":changes.Price,
+        "Quantity":changes.Quantity
+    }    
+    var params = {
+        TableName:"InventoryTable",
+        Item:rowToUpdate
     }
-    return false;
+   
+    await dynamoDB.put(params).promise();
+}
+
+async function productDelete(_, { ItemId }) {
+    console.log("ItemId-------->>>",ItemId);
+    var params = {
+        TableName:"InventoryTable",
+        Key: {
+            "ItemId": ItemId,
+          },
+          ConditionExpression: "ItemId= :ItemId",
+          ExpressionAttributeValues: {
+            ":ItemId": ItemId
+        }
+    }   
+    const response = await dynamoDB.delete(params).promise();
+    console.log('response---->>>',response);
+    return true;
+
   }
 
 module.exports = {
@@ -47,5 +78,5 @@ module.exports = {
     productAdd,
     getProduct,
     productUpdate,
-    remove   
+    productDelete
   };

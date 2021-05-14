@@ -23,53 +23,53 @@ export default class ProductList extends React.Component {
   }
 
   async loadData() {
-    const query = `query{
-        productList{
-                id Name Price Image Category
-            }
-        }`;
+    const query = `query{productList{ ItemId ProductName Vendor Price Quantity ImageJSON}}`;
     const response = await fetch(window.env.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ query }),
     });
-    const responseResult = await response.json();
+    const responseResult = await response.json();    
     this.setState({ products: responseResult.data.productList });
   }
 
   async addProduct(newProduct) {
-    const newProducts = this.state.products.slice();
-    newProduct.id = this.state.products.length + 1;
+    const newProducts = this.state.products.slice();    
+    newProduct.ItemId = this.state.products.length;
     newProducts.push(newProduct);
+    console.log('newProduct--------->>>',newProduct);
     this.setState({ products: newProducts });
     const query = `mutation {
             productAdd(product:{
-                Name: "${newProduct.productName}",
+                ItemId: ${newProduct.ItemId},
+                ProductName: "${newProduct.productName}",
                 Price: ${newProduct.pricePerUnit},
-                Image: "${newProduct.imageUrl}",
-                Category: ${newProduct.category},
-            }) {id}
+                Vendor: "${newProduct.vendor}",
+                Quantity: ${newProduct.quantity}                
+            }) {ItemId}
         }`;
 
     const response = await fetch(window.env.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query }),
-    });    
+    });
+    console.log('response------------>>>',response);
     this.loadData();
     this.handleHideModal();
   }
 
-  async deleteProduct(id) {    
-    const query = `mutation productDelete($id: Int!) {
-            productDelete(id: $id)
-        }`;
-    const variables = { id };
-    await fetch(window.env.UI_API_ENDPOINT, {
+  async deleteProduct(ItemId) {    
+    const query = `mutation productDelete($ItemId: Int!) {
+      productDelete(ItemId: $ItemId)
+    }`;
+    const variables = { ItemId };
+    const response = await fetch(window.env.UI_API_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ query, variables }),
-    });    
+    });
+    console.log('response------->>>',response);
     this.loadData();
   }
 
